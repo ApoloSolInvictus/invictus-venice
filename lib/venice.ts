@@ -11,8 +11,37 @@ export type VeniceError = {
   requestId?: string | null;
 };
 
+function stripWrappingQuotes(value: string) {
+  const trimmed = value.trim();
+  const first = trimmed.at(0);
+  const last = trimmed.at(-1);
+
+  if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+    return trimmed.slice(1, -1).trim();
+  }
+
+  return trimmed;
+}
+
 export function getVeniceKey() {
-  return process.env.VENICE_API_KEY?.trim();
+  const raw = process.env.VENICE_API_KEY?.trim();
+
+  if (!raw) {
+    return undefined;
+  }
+
+  const keyLine =
+    raw
+      .split(/\r?\n/)
+      .find((line) => /^\s*VENICE_API_KEY\s*=/.test(line)) || raw.split(/\r?\n/)[0];
+
+  const normalized = stripWrappingQuotes(keyLine)
+    .replace(/^\s*VENICE_API_KEY\s*=\s*/i, "")
+    .replace(/^Bearer\s+/i, "")
+    .replace(/[;,]\s*$/, "")
+    .trim();
+
+  return stripWrappingQuotes(normalized);
 }
 
 export function getTextModel() {
@@ -44,10 +73,15 @@ export async function readVeniceError(response: Response): Promise<VeniceError> 
       message?: string;
     };
 
-    const error =
+    let error =
       typeof data.error === "string"
         ? data.error
         : data.error?.message || data.message || "Venice devolvio un error.";
+
+    if (response.status === 401 && /authentication failed/i.test(error)) {
+      error =
+        "Authentication failed: Venice rechazo VENICE_API_KEY. Revisa que en Vercel este pegada la API key real de Venice, sin texto extra, y redeploya el sitio.";
+    }
 
     return { error, status: response.status, requestId };
   } catch {

@@ -14,6 +14,7 @@ INVICTUS_ACCESS_CODE=tu_codigo_privado
 ```
 
 `VENICE_API_KEY` nunca se envia al navegador. Las llamadas a Venice se hacen desde rutas API de Next.js.
+En Vercel, pega el valor de la key en la variable `VENICE_API_KEY`; no pegues el bloque completo `.env`.
 
 `INVICTUS_ACCESS_CODE` es opcional, pero recomendado. Cuando existe, la app pide el codigo y guarda una cookie httpOnly para proteger el chat y las rutas API.
 
