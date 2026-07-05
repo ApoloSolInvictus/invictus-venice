@@ -6,6 +6,7 @@ build/
 .vercel/
 .env
 .env*.local
+next-env.d.ts
 *.log
 Thumbs.db
 .DS_Store
