@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Invictus Venice",
-  description: "Chat privado con texto e imagenes usando Venice AI.",
+  title: "Agora de Acuario",
+  description: "Canal privado con Venice AI, Firebase Storage y Vercel.",
 };
 
 export default function RootLayout({

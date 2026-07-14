@@ -35,8 +35,8 @@ export default function GatePage() {
         <div className="gate-mark">
           <LockKeyhole aria-hidden="true" size={24} />
         </div>
-        <h1>Invictus Venice</h1>
-        <label htmlFor="access-code">Codigo Invictus</label>
+        <h1>Agora de Acuario</h1>
+        <label htmlFor="access-code">Codigo del Agora</label>
         <div className="gate-field">
           <input
             id="access-code"

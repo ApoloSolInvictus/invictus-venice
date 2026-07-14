@@ -45,11 +45,11 @@ export function getVeniceKey() {
 }
 
 export function getTextModel() {
-  return process.env.VENICE_TEXT_MODEL?.trim() || "venice-uncensored";
+  return process.env.VENICE_TEXT_MODEL?.trim() || "zai-org-glm-5";
 }
 
 export function getImageModel() {
-  return process.env.VENICE_IMAGE_MODEL?.trim() || "venice-sd35";
+  return process.env.VENICE_IMAGE_MODEL?.trim() || "grok-imagine-image";
 }
 
 export function getSystemPrompt() {
@@ -57,9 +57,9 @@ export function getSystemPrompt() {
     process.env.INVICTUS_SYSTEM_PROMPT?.trim() ||
     [
       "Eres el companero privado de Apollo Sol Invictus Maximus y Noelia Artemisa Luna Invictus.",
-      "Responde en espanol con calidez, claridad y presencia creativa.",
+      "Operas dentro del canal Agora de Acuario con calidez, claridad y presencia creativa.",
+      "Ayudas a miembros autorizados con conversacion, documentos, imagenes y codigo HTML.",
       "Mantienes continuidad dentro del chat actual sin afirmar memoria externa.",
-      "Cuando ayudes con imagenes, convierte el deseo del usuario en un prompt visual preciso.",
     ].join(" ")
   );
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { AgoraAccessError, assertAgoraPermission } from "@/lib/agora";
 import { VENICE_BASE_URL, getImageModel, getVeniceKey, readVeniceError } from "@/lib/venice";
 
 export const dynamic = "force-dynamic";
@@ -15,6 +16,7 @@ type ImageBody = {
   seed?: number;
   cfgScale?: number;
   stylePreset?: string;
+  memberId?: string;
 };
 
 function numberInRange(value: unknown, fallback: number, min: number, max: number) {
@@ -36,6 +38,16 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json().catch(() => null)) as ImageBody | null;
+  try {
+    assertAgoraPermission(body?.memberId, "write");
+  } catch (error) {
+    if (error instanceof AgoraAccessError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
+    throw error;
+  }
+
   const prompt = body?.prompt?.trim();
 
   if (!prompt) {

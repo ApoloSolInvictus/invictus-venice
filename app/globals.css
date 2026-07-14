@@ -1,15 +1,15 @@
 :root {
-  --bg: #090806;
-  --panel: #15120e;
-  --panel-2: #1d1913;
-  --line: #393026;
-  --line-strong: #5b4935;
+  --bg: #080a0d;
+  --panel: #11161c;
+  --panel-2: #171f27;
+  --line: #2c3943;
+  --line-strong: #465969;
   --text: #f7efe2;
-  --muted: #b6a993;
-  --gold: #e9b95f;
-  --red: #a83f3f;
-  --teal: #4fb7a7;
-  --ink: #0f0d0a;
+  --muted: #aeb9bd;
+  --gold: #e6ba62;
+  --red: #b85050;
+  --teal: #52c3b0;
+  --ink: #090d11;
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
 }
 
@@ -27,7 +27,7 @@ body {
   background:
     linear-gradient(90deg, rgba(233, 185, 95, 0.08) 1px, transparent 1px),
     linear-gradient(0deg, rgba(79, 183, 167, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 50% -20%, rgba(168, 63, 63, 0.18), transparent 34rem),
+    radial-gradient(circle at 50% -20%, rgba(82, 195, 176, 0.18), transparent 34rem),
     var(--bg);
   background-size: 44px 44px, 44px 44px, auto, auto;
   color: var(--text);
@@ -89,7 +89,7 @@ button:disabled {
   display: grid;
   place-items: center;
   border: 1px solid var(--line-strong);
-  background: #211b14;
+  background: #141b22;
   color: var(--gold);
 }
 
@@ -153,7 +153,10 @@ h2 {
 .segment button,
 .side-actions button,
 .composer button,
-.gate-field button {
+.gate-field button,
+.action-row button,
+.artifact-actions button,
+.artifact-actions a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -161,14 +164,15 @@ h2 {
   min-height: 42px;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
-  background: #211b14;
+  background: #141b22;
   color: var(--text);
   font-weight: 800;
+  text-decoration: none;
 }
 
 .segment button.active {
   border-color: var(--gold);
-  background: #342719;
+  background: #243142;
   color: #ffe5ad;
 }
 
@@ -186,7 +190,7 @@ select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #0e0c09;
+  background: #0a0f14;
   color: var(--text);
   outline: none;
   padding: 10px 11px;
@@ -220,7 +224,7 @@ input[type="range"] {
   min-height: 42px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #0e0c09;
+  background: #0a0f14;
   color: var(--text);
   padding: 0 11px;
 }
@@ -245,12 +249,13 @@ input[type="range"] {
 
 .chat-shell {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   min-height: 100vh;
   padding: 22px;
 }
 
 .topbar {
+  grid-row: 1;
   justify-content: space-between;
   gap: 14px;
   border-bottom: 1px solid var(--line);
@@ -269,6 +274,7 @@ input[type="range"] {
 }
 
 .message-list {
+  grid-row: 3;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -303,7 +309,7 @@ input[type="range"] {
 
 .message.user .message-body {
   border-color: rgba(233, 185, 95, 0.42);
-  background: rgba(52, 39, 25, 0.88);
+  background: rgba(36, 49, 66, 0.88);
 }
 
 .message-body p {
@@ -324,7 +330,7 @@ input[type="range"] {
   height: 28px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #0e0c09;
+  background: #0a0f14;
   color: var(--muted);
 }
 
@@ -363,6 +369,7 @@ input[type="range"] {
 }
 
 .composer {
+  grid-row: 4;
   gap: 10px;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
@@ -393,7 +400,169 @@ input[type="range"] {
 .composer button {
   min-width: 118px;
   background: var(--gold);
-  color: #1a1208;
+  color: #141006;
+}
+
+.channel-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.permission-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.permission-row span,
+.artifact-card span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(82, 195, 176, 0.08);
+  color: #c9fff6;
+  padding: 0 9px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.notice {
+  grid-row: 2;
+  margin-top: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-weight: 800;
+}
+
+.notice.ok {
+  border-color: rgba(82, 195, 176, 0.62);
+  background: rgba(82, 195, 176, 0.1);
+  color: #d6fff8;
+}
+
+.notice.error {
+  border-color: rgba(184, 80, 80, 0.72);
+  background: rgba(184, 80, 80, 0.13);
+  color: #ffc7bd;
+}
+
+.workspace-shell {
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  gap: 18px;
+  min-height: 0;
+  overflow: hidden;
+  padding: 24px 0 0;
+}
+
+.html-workspace {
+  grid-template-columns: minmax(320px, 460px) minmax(0, 1fr);
+}
+
+.tool-panel,
+.artifact-card,
+.empty-state {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(17, 22, 28, 0.86);
+  box-shadow: var(--shadow);
+}
+
+.tool-panel {
+  align-self: start;
+  display: grid;
+  gap: 14px;
+  padding: 15px;
+}
+
+.html-editor {
+  align-self: stretch;
+}
+
+.code-input {
+  min-height: 320px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  line-height: 1.5;
+}
+
+.hint-line,
+.empty-state {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.action-row,
+.artifact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action-row button {
+  flex: 1;
+}
+
+.artifact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.artifact-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+}
+
+.artifact-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: #0a0f14;
+  color: var(--gold);
+}
+
+.artifact-card h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.artifact-card p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.artifact-actions {
+  justify-content: flex-end;
+}
+
+.artifact-actions button,
+.artifact-actions a {
+  min-height: 36px;
+  padding: 0 11px;
+}
+
+.empty-state {
+  padding: 16px;
 }
 
 .gate-shell {
@@ -450,6 +619,17 @@ input[type="range"] {
   .chat-shell {
     min-height: 70vh;
   }
+
+  .workspace-shell,
+  .html-workspace {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .artifact-list {
+    overflow: visible;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 560px) {
@@ -481,5 +661,19 @@ input[type="range"] {
 
   .message {
     grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .artifact-card {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .artifact-actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .artifact-actions button,
+  .artifact-actions a {
+    flex: 1;
   }
 }

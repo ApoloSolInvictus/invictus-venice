@@ -7,6 +7,7 @@ import {
   getVeniceKey,
   readVeniceError,
 } from "@/lib/venice";
+import { AgoraAccessError, assertAgoraPermission } from "@/lib/agora";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ type ChatBody = {
   model?: string;
   temperature?: number;
   enableWebSearch?: boolean;
+  memberId?: string;
 };
 
 function cleanMessages(messages: VeniceChatMessage[]) {
@@ -39,6 +41,18 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json().catch(() => null)) as ChatBody | null;
+  let member;
+
+  try {
+    member = assertAgoraPermission(body?.memberId, "read");
+  } catch (error) {
+    if (error instanceof AgoraAccessError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
+    throw error;
+  }
+
   const messages = cleanMessages(body?.messages || []);
 
   if (messages.length === 0) {
@@ -53,7 +67,16 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       model: body?.model?.trim() || getTextModel(),
-      messages: [{ role: "system", content: getSystemPrompt() }, ...messages],
+      messages: [
+        {
+          role: "system",
+          content: [
+            getSystemPrompt(),
+            `Miembro activo: ${member.label} (${member.id}). Permisos: ${member.permissions.join(", ")}.`,
+          ].join(" "),
+        },
+        ...messages,
+      ],
       temperature: typeof body?.temperature === "number" ? body.temperature : 0.9,
       venice_parameters: {
         enable_web_search: body?.enableWebSearch ? "auto" : "off",
